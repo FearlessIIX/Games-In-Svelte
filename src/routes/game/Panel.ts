@@ -3,6 +3,7 @@
 import { map, map_size } from "./Map"
 import { Player } from "./Player"
 import { panel } from "./stores"
+import { get } from "svelte/store"
 
 export function get_game_panel(x: number, y: number) {
     let panel: number[][] = []
@@ -31,11 +32,15 @@ export function move_panel(direction: string) {
     switch (direction) {
         case "up":
             // If top edge is along top border of map
-            if (Panel.edges.top == map_size.y) Player.panel.y--
+            if (Panel.edges.top == map_size.y) {
+                Player.panel.y.update(val => val - 1)
+                Player.absolute.y.update(val => val + 1)
+            }
             // Verifies that if panel moves it will not go outside of map
             else if (verify_movement(0, 1)) {
-                if (!(Player.panel.y == 3)) {
-                    Player.panel.y--
+                Player.absolute.y.update(val => val + 1)
+                if (!(get(Player.panel.y) == 3)) {
+                    Player.panel.y.update(val => val - 1)
                     break
                 }
                 Panel.draw_point.y++
@@ -44,15 +49,22 @@ export function move_panel(direction: string) {
                 // Panel bottom and top go up
                 Panel.edges.top++; Panel.edges.bottom++
             }
-            else if (Player.panel.y < 5) Player.panel.y--
+            else if (get(Player.panel.y) < 5) {
+                Player.panel.y.update(val => val - 1)
+                Player.absolute.y.update(val => val + 1)
+            }
             break
         case "down":
             // If bottom edge is along bottom border of map
-            if (Panel.edges.bottom == 0) Player.panel.y++
+            if (Panel.edges.bottom == 0) {
+                Player.panel.y.update(val => val + 1)
+                Player.absolute.y.update(val => val - 1)
+            }
             // Verifies that if panel moves it will not go outside of map
             else if (verify_movement(0, -1)) {
-                if (!(Player.panel.y == 3)) {
-                    Player.panel.y++
+                Player.absolute.y.update(val => val - 1)
+                if (!(get(Player.panel.y) == 3)) {
+                    Player.panel.y.update(val => val + 1)
                     break
                 }
                 Panel.draw_point.y--
@@ -61,15 +73,22 @@ export function move_panel(direction: string) {
                 // Panel bottom and top go down
                 Panel.edges.bottom--; Panel.edges.top--                        
             }
-            else if (Player.panel.y > 0) Player.panel.y++
+            else if (get(Player.panel.y) > 0) {
+                Player.panel.y.update(val => val + 1)
+                Player.absolute.y.update(val => val - 1)
+            }
             break
         case "left":
             // If left edge is along left border of map
-            if (Panel.edges.left == 0) Player.panel.x++
+            if (Panel.edges.left == 0) {
+                Player.panel.x.update(val => val + 1)
+                Player.absolute.x.update(val => val - 1)
+            }
             // Verifies that if panel moves it will not go outside of map
             else if (verify_movement(-1, 0)) {
-                if (!(Player.panel.x == 3)) {
-                    Player.panel.x++
+                Player.absolute.x.update(val => val - 1)
+                if (!(get(Player.panel.x) == 3)) {
+                    Player.panel.x.update(val => val + 1)
                     break
                 }
                 Panel.draw_point.x--
@@ -78,15 +97,22 @@ export function move_panel(direction: string) {
                 // Panel left and right go left
                 Panel.edges.left--; Panel.edges.right--
             }
-            else if (Player.panel.x > 0) Player.panel.x++
+            else if (get(Player.panel.x) > 0) {
+                Player.panel.x.update(val => val + 1)
+                Player.absolute.x.update(val => val - 1)
+            }
             break
         case "right":
             // If right edge is along right border of map
-            if (Panel.edges.right == map_size.x) Player.panel.x--
+            if (Panel.edges.right == map_size.x) {
+                Player.panel.x.update(val => val - 1)
+                Player.absolute.x.update(val => val + 1)
+            }
             // Verifies that if panel moves it will not go outside of map
             else if (verify_movement(1, 0)) {
-                if (!(Player.panel.x == 3)) {
-                    Player.panel.x--
+                Player.absolute.x.update(val => val + 1)
+                if (!(get(Player.panel.x) == 3)) {
+                    Player.panel.x.update(val => val - 1)
                     break
                 }
                 Panel.draw_point.x++
@@ -95,7 +121,10 @@ export function move_panel(direction: string) {
                 // Panel left and right go right
                 Panel.edges.left++; Panel.edges.right++
             }
-            else if (Player.panel.x < 5) Player.panel.x--
+            else if (get(Player.panel.x) < 5) {
+                Player.panel.x.update(val => val - 1)
+                Player.absolute.x.update(val => val + 1)
+            }
             break            
     }
 }

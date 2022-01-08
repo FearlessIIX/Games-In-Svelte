@@ -5,8 +5,12 @@
     import { reverse_array }from "./utils/functions"
     import { Player } from "./game/Player"
 
-    let screen_panel;
+    let screen_panel: number[][];
+    let panel_x: number;
+    let panel_y: number;
     panel.subscribe(val => screen_panel = val)
+    Player.panel.x.subscribe(val => panel_x = val)
+    Player.panel.y.subscribe(val => panel_y = val)
 
     // Returns the color of that position as a tailwind class
     function get_color(pos: number) {
@@ -64,7 +68,7 @@
                 <div class="flex float-right w-[25px] h-[25px] {get_color(pos)}">
 
                     <!-- If current indexes == player_coordinates -->
-                    {#if index_x + 1 == Player.panel.x && index_y + 1 == Player.panel.y}
+                    {#if index_x + 1 == panel_x && index_y + 1 == panel_y}
 
                     <!-- This represents the Player -->
                     <div class="flex justify-center items-center w-full h-full">
