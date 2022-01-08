@@ -1,0 +1,1 @@
+export let player_location = {x: 3, y: 3}
