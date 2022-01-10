@@ -1,16 +1,20 @@
 <!-- Location: ./routes/index.svelte -->
 <script lang="ts">
     import { panel } from "./game/stores"
-    import { move_panel  } from "./game/Panel"
+    import { move_panel } from "./game/Panel"
     import { reverse_array }from "./utils/functions"
     import { Player } from "./game/Player"
 
     let screen_panel: number[][];
     let panel_x: number;
     let panel_y: number;
+    let player_x: number;
+    let player_y: number;
     panel.subscribe(val => screen_panel = val)
     Player.panel.x.subscribe(val => panel_x = val)
     Player.panel.y.subscribe(val => panel_y = val)
+    Player.absolute.x.subscribe(val => player_x = val)
+    Player.absolute.y.subscribe(val => player_y = val)
 
     // Returns the color of that position as a tailwind class
     function get_color(pos: number) {
@@ -79,6 +83,11 @@
                 {/each}
             </div>
             {/each}
+        </div>
+    </div>
+    <div class="flex justify-center items center">
+        <div>
+            Player x: {player_x}, Player y: {player_y}
         </div>
     </div>
 </div>

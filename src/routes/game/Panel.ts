@@ -31,6 +31,7 @@ export function get_game_panel(x: number, y: number) {
 export function move_panel(direction: string) {
     switch (direction) {
         case "up":
+            if (!(collisions(get(Player.absolute.x), get(Player.absolute.y) + 1))) break;
             // If top edge is along top border of map
             if (Panel.edges.top == map_size.y) {
                 Player.panel.y.update(val => val - 1)
@@ -39,7 +40,7 @@ export function move_panel(direction: string) {
             // Verifies that if panel moves it will not go outside of map
             else if (verify_movement(0, 1)) {
                 Player.absolute.y.update(val => val + 1)
-                if (!(get(Player.panel.y) == 3)) {
+                if (!(get(Player.panel.y) == Panel.middle.y)) {
                     Player.panel.y.update(val => val - 1)
                     break
                 }
@@ -55,6 +56,7 @@ export function move_panel(direction: string) {
             }
             break
         case "down":
+            if (!(collisions(get(Player.absolute.x), get(Player.absolute.y) - 1))) break;
             // If bottom edge is along bottom border of map
             if (Panel.edges.bottom == 0) {
                 Player.panel.y.update(val => val + 1)
@@ -63,7 +65,7 @@ export function move_panel(direction: string) {
             // Verifies that if panel moves it will not go outside of map
             else if (verify_movement(0, -1)) {
                 Player.absolute.y.update(val => val - 1)
-                if (!(get(Player.panel.y) == 3)) {
+                if (!(get(Player.panel.y) == Panel.middle.y)) {
                     Player.panel.y.update(val => val + 1)
                     break
                 }
@@ -79,6 +81,7 @@ export function move_panel(direction: string) {
             }
             break
         case "left":
+            if (!(collisions(get(Player.absolute.x) - 1, get(Player.absolute.y)))) break;
             // If left edge is along left border of map
             if (Panel.edges.left == 0) {
                 Player.panel.x.update(val => val + 1)
@@ -87,7 +90,7 @@ export function move_panel(direction: string) {
             // Verifies that if panel moves it will not go outside of map
             else if (verify_movement(-1, 0)) {
                 Player.absolute.x.update(val => val - 1)
-                if (!(get(Player.panel.x) == 3)) {
+                if (!(get(Player.panel.x) == Panel.middle.x)) {
                     Player.panel.x.update(val => val + 1)
                     break
                 }
@@ -103,6 +106,7 @@ export function move_panel(direction: string) {
             }
             break
         case "right":
+            if (!(collisions(get(Player.absolute.x) + 1, get(Player.absolute.y)))) break;
             // If right edge is along right border of map
             if (Panel.edges.right == map_size.x) {
                 Player.panel.x.update(val => val - 1)
@@ -111,7 +115,7 @@ export function move_panel(direction: string) {
             // Verifies that if panel moves it will not go outside of map
             else if (verify_movement(1, 0)) {
                 Player.absolute.x.update(val => val + 1)
-                if (!(get(Player.panel.x) == 3)) {
+                if (!(get(Player.panel.x) == Panel.middle.x)) {
                     Player.panel.x.update(val => val - 1)
                     break
                 }
@@ -138,21 +142,29 @@ function verify_movement(x: number, y: number) {
     return (x2 >= 0 && x2 <= map_size.x - Panel.size.x) && (y2 >= 0 && y2 <= map_size.y - Panel.size.y)
 }
 
+function collisions(x: number, y: number) {
+    let index_x = x
+    let index_y = (map_size.y - y) - 1
+    let tile_prop = map[index_y][index_x]
+    if (tile_prop == 1) return false;
+    return true;
+}
+
 export const Panel = {
     size: {
-        x: 5, y: 5
+        x: 10, y: 10
     },
     middle: {
-        x: 3, y: 3
+        x: 5, y: 5
     },
     draw_point: {
         x: 0,
         y: 0
     },
     edges: {
-        top: 5,
+        top: 10,
         bottom: 0,
         left: 0,
-        right: 5
+        right: 10
     }
 }
