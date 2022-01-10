@@ -1,3 +1,4 @@
+<!-- Location: ./src/routes/Tile.svelte -->
 <script lang="ts">
         // Returns the color of that position as a tailwind class
     function get_color(pos: number) {
