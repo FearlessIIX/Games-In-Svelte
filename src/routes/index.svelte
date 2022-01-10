@@ -1,3 +1,4 @@
+<!-- Location: ./src/routes/index.svelte -->
 <script lang="ts">
     import { panel } from "./game/stores"
     import { move_panel } from "./game/Panel"
