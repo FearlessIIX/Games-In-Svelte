@@ -1,9 +1,9 @@
-<!-- Location: ./routes/index.svelte -->
 <script lang="ts">
     import { panel } from "./game/stores"
     import { move_panel } from "./game/Panel"
     import { reverse_array }from "./utils/functions"
     import { Player } from "./game/Player"
+    import Tile from "./Tile.svelte"
 
     let screen_panel: number[][];
     let panel_x: number;
@@ -15,18 +15,6 @@
     Player.panel.y.subscribe(val => panel_y = val)
     Player.absolute.x.subscribe(val => player_x = val)
     Player.absolute.y.subscribe(val => player_y = val)
-
-    // Returns the color of that position as a tailwind class
-    function get_color(pos: number) {
-        switch (pos) {
-            case 0:
-                return "bg-white"
-            case 1:
-                return "bg-black"
-            case 2:
-                return "bg-amber-900"        
-        }
-    }
 
     // Performs specific function based off of keycode
     function handleKeydown(event) {
@@ -67,19 +55,7 @@
 
                 <!-- Each item in row (reverse order) -->
                 {#each reverse_array(row) as pos, index_x}
-
-                <!-- This element is every square point in the frame -->
-                <div class="flex float-right w-[25px] h-[25px] {get_color(pos)}">
-
-                    <!-- If current indexes == player_coordinates -->
-                    {#if index_x + 1 == panel_x && index_y + 1 == panel_y}
-
-                    <!-- This represents the Player -->
-                    <div class="flex justify-center items-center w-full h-full">
-                        <div class="w-[10px] h-[10px] border-black border-0 border-solid rounded-[50%] bg-green-600"></div>
-                    </div>
-                    {/if}
-                </div>
+                    <Tile {index_x} {index_y} {panel_x} {panel_y} {pos}/>
                 {/each}
             </div>
             {/each}
