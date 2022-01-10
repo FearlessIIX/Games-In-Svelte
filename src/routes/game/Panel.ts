@@ -150,21 +150,25 @@ function collisions(x: number, y: number) {
     return true;
 }
 
+const size = {
+    x: 20, y: 20
+}
+
 export const Panel = {
     size: {
-        x: 10, y: 10
+        x: size.x, y: size.y
     },
     middle: {
-        x: 5, y: 5
+        x: size.x / 2, y: size.y / 2
     },
     draw_point: {
         x: 0,
         y: 0
     },
     edges: {
-        top: 10,
+        top: size.x,
         bottom: 0,
         left: 0,
-        right: 10
+        right: size.y
     }
 }
